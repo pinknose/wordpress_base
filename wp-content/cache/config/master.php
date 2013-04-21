@@ -81,7 +81,7 @@ return array(
 	'fragmentcache.lifetime' => 180,
 	'fragmentcache.groups' => array(
 	),
-	'pgcache.enabled' => true,
+	'pgcache.enabled' => false,
 	'pgcache.comment_cookie_ttl' => 1800,
 	'pgcache.debug' => false,
 	'pgcache.engine' => 'file_generic',
@@ -156,7 +156,7 @@ return array(
 	'pgcache.prime.limit' => 10,
 	'pgcache.prime.sitemap' => '',
 	'pgcache.prime.post.enabled' => false,
-	'minify.enabled' => true,
+	'minify.enabled' => false,
 	'minify.auto' => true,
 	'minify.debug' => false,
 	'minify.engine' => 'file',
@@ -429,7 +429,7 @@ return array(
 	'browsercache.other.etag' => false,
 	'browsercache.other.w3tc' => false,
 	'browsercache.other.replace' => false,
-	'browsercache.timestamp' => '',
+	'browsercache.timestamp' => '1366580782',
 	'mobile.enabled' => false,
 	'mobile.rgroups' => array(
 		'high' => array(
