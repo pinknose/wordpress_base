@@ -23,12 +23,6 @@
  */
 
 /**
- * Sets up the content width value based on the theme's design and stylesheet.
- */
-if ( ! isset( $content_width ) )
-	$content_width = 625;
-
-/**
  * Sets up theme defaults and registers the various WordPress features that
  * Twenty Twelve supports.
  *
@@ -63,24 +57,8 @@ function twentytwelve_setup() {
 	// This theme uses wp_nav_menu() in one location.
 	register_nav_menu( 'primary', __( 'Primary Menu', 'twentytwelve' ) );
 
-	/*
-	 * This theme supports custom background color and image, and here
-	 * we also set up the default background color.
-	 */
-	add_theme_support( 'custom-background', array(
-		'default-color' => 'e6e6e6',
-	) );
-
-	// This theme uses a custom image size for featured images, displayed on "standard" posts.
-	add_theme_support( 'post-thumbnails' );
-	set_post_thumbnail_size( 624, 9999 ); // Unlimited height, soft crop
 }
 add_action( 'after_setup_theme', 'twentytwelve_setup' );
-
-/**
- * Adds support for a custom header image.
- */
-require( get_template_directory() . '/inc/custom-header.php' );
 
 /**
  * Enqueues scripts and styles for front-end.
@@ -98,47 +76,10 @@ function twentytwelve_scripts_styles() {
 		wp_enqueue_script( 'comment-reply' );
 
 	/*
-	 * Adds JavaScript for handling the navigation menu hide-and-show behavior.
+	 * Loads defaults(reset) stylesheet.
 	 */
-	wp_enqueue_script( 'twentytwelve-navigation', get_template_directory_uri() . '/js/navigation.js', array(), '1.0', true );
-
-	/*
-	 * Loads our special font CSS file.
-	 *
-	 * The use of Open Sans by default is localized. For languages that use
-	 * characters not supported by the font, the font can be disabled.
-	 *
-	 * To disable in a child theme, use wp_dequeue_style()
-	 * function mytheme_dequeue_fonts() {
-	 *     wp_dequeue_style( 'twentytwelve-fonts' );
-	 * }
-	 * add_action( 'wp_enqueue_scripts', 'mytheme_dequeue_fonts', 11 );
-	 */
-
-	/* translators: If there are characters in your language that are not supported
-	   by Open Sans, translate this to 'off'. Do not translate into your own language. */
-	if ( 'off' !== _x( 'on', 'Open Sans font: on or off', 'twentytwelve' ) ) {
-		$subsets = 'latin,latin-ext';
-
-		/* translators: To add an additional Open Sans character subset specific to your language, translate
-		   this to 'greek', 'cyrillic' or 'vietnamese'. Do not translate into your own language. */
-		$subset = _x( 'no-subset', 'Open Sans font: add new subset (greek, cyrillic, vietnamese)', 'twentytwelve' );
-
-		if ( 'cyrillic' == $subset )
-			$subsets .= ',cyrillic,cyrillic-ext';
-		elseif ( 'greek' == $subset )
-			$subsets .= ',greek,greek-ext';
-		elseif ( 'vietnamese' == $subset )
-			$subsets .= ',vietnamese';
-
-		$protocol = is_ssl() ? 'https' : 'http';
-		$query_args = array(
-			'family' => 'Open+Sans:400italic,700italic,400,700',
-			'subset' => $subsets,
-		);
-		wp_enqueue_style( 'twentytwelve-fonts', add_query_arg( $query_args, "$protocol://fonts.googleapis.com/css" ), array(), null );
-	}
-
+	wp_enqueue_style( 'pinknose-reset', get_template_directory_uri() . '/css/defaults.css' );
+		
 	/*
 	 * Loads our main stylesheet.
 	 */
@@ -201,26 +142,6 @@ function twentytwelve_widgets_init() {
 		'name' => __( 'Main Sidebar', 'twentytwelve' ),
 		'id' => 'sidebar-1',
 		'description' => __( 'Appears on posts and pages except the optional Front Page template, which has its own widgets', 'twentytwelve' ),
-		'before_widget' => '<aside id="%1$s" class="widget %2$s">',
-		'after_widget' => '</aside>',
-		'before_title' => '<h3 class="widget-title">',
-		'after_title' => '</h3>',
-	) );
-
-	register_sidebar( array(
-		'name' => __( 'First Front Page Widget Area', 'twentytwelve' ),
-		'id' => 'sidebar-2',
-		'description' => __( 'Appears when using the optional Front Page template with a page set as Static Front Page', 'twentytwelve' ),
-		'before_widget' => '<aside id="%1$s" class="widget %2$s">',
-		'after_widget' => '</aside>',
-		'before_title' => '<h3 class="widget-title">',
-		'after_title' => '</h3>',
-	) );
-
-	register_sidebar( array(
-		'name' => __( 'Second Front Page Widget Area', 'twentytwelve' ),
-		'id' => 'sidebar-3',
-		'description' => __( 'Appears when using the optional Front Page template with a page set as Static Front Page', 'twentytwelve' ),
 		'before_widget' => '<aside id="%1$s" class="widget %2$s">',
 		'after_widget' => '</aside>',
 		'before_title' => '<h3 class="widget-title">',
@@ -405,20 +326,6 @@ function twentytwelve_body_class( $classes ) {
 	return $classes;
 }
 add_filter( 'body_class', 'twentytwelve_body_class' );
-
-/**
- * Adjusts content_width value for full-width and single image attachment
- * templates, and when there are no active widgets in the sidebar.
- *
- * @since Twenty Twelve 1.0
- */
-function twentytwelve_content_width() {
-	if ( is_page_template( 'page-templates/full-width.php' ) || is_attachment() || ! is_active_sidebar( 'sidebar-1' ) ) {
-		global $content_width;
-		$content_width = 960;
-	}
-}
-add_action( 'template_redirect', 'twentytwelve_content_width' );
 
 /**
  * Add postMessage support for site title and description for the Theme Customizer.
